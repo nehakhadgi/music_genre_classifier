@@ -97,3 +97,5 @@ The pipeline logs the softmax probability scores of the correct class prediction
 
 ## 🚨 Production MLOps Configuration
 The model training is configured to auto-evaluate daily at **3:00 AM UTC** to incorporate newly ingested music catalogs and verify that classification performance remains stable over time. If the rolling macro F1-score drops below **0.65**, an alert is automatically dispatched to the engineering team.
+##Live Demo is available in 
+https://musicgenreclassifiergit-l7oqyanqlkhxsowvcnhxbg.streamlit.app/
