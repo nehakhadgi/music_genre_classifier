@@ -1,5 +1,6 @@
 import os
 import json
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import streamlit as st
@@ -7,7 +8,6 @@ import streamlit as st
 os.environ["KERAS_BACKEND"] = "tensorflow"
 import keras
 
-st.set_page_colab = True
 st.set_page_config(
     page_title="Music Genre Classifier",
     page_icon="🎵",
@@ -21,15 +21,16 @@ This interactive app uses a pre-trained Deep Neural Network (Multi-Layer Percept
 to classify audio tracks into genres using 518 precomputed acoustic features.
 """)
 
-# Paths
-MODEL_PATH = "artifacts/genre_mlp.keras"
-METADATA_PATH = "artifacts/metadata.json"
-PREPARED_PATH = "artifacts/prepared_fma_small.npz"
+# Get the directory where app.py resides to build absolute paths
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_PATH = BASE_DIR / "artifacts" / "genre_mlp.keras"
+METADATA_PATH = BASE_DIR / "artifacts" / "metadata.json"
+PREPARED_PATH = BASE_DIR / "artifacts" / "prepared_fma_small.npz"
 
 @st.cache_resource
 def load_assets():
     # Load class names
-    with open(METADATA_PATH, "r") as f:
+    with open(METADATA_PATH, "r", encoding="utf-8") as f:
         metadata = json.load(f)
     class_names = metadata["class_names"]
     
@@ -47,14 +48,13 @@ try:
     model, class_names, scaler_mean, scaler_scale = load_assets()
     st.success("✅ Model and scaler assets successfully loaded!")
 except Exception as e:
-    st.error(f"❌ Could not load model assets. Please make sure the training pipeline was run. Error: {e}")
+    st.error(f"❌ Could not load model assets. Error details: {e}")
     st.stop()
 
 # User Inputs
 st.subheader("🔬 Real-Time Classification Input")
 st.write("Input a few baseline acoustic statistics to predict the genre, or simulate an analysis:")
 
-# Let user choose arbitrary values or generate sample random feature values 
 if st.button("🎲 Generate Random Audio Feature Sample"):
     np.random.seed(42)
     # Generate a dummy feature vector matching FMA Small's 518 dimensions
@@ -79,5 +79,3 @@ if st.button("🎲 Generate Random Audio Feature Sample"):
         'Probability': probabilities
     }).set_index('Genre')
     st.bar_chart(chart_data)
-
-st.info("💡 To deploy this publicly, sync this `app.py` script to your GitHub repository and link it to [Streamlit Community Cloud](https://share.streamlit.io).")
