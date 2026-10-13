@@ -5,6 +5,8 @@ An end-to-end audio machine learning pipeline that classifies music tracks into 
 The performance of the models is evaluated using test accuracy, macro F1-score, confidence score distributions, and a normalized confusion matrix.
 
 ---
+##Live Demo is available in 
+https://musicgenreclassifiergit-l7oqyanqlkhxsowvcnhxbg.streamlit.app/
 
 ## 📌 Project Overview
 Audio classification is a core technology behind modern streaming services, content recommendation engines, and automated tagging systems. However, music audio features are highly non-linear, with overlapping frequencies and rhythmic patterns across genres.
@@ -97,5 +99,4 @@ The pipeline logs the softmax probability scores of the correct class prediction
 
 ## 🚨 Production MLOps Configuration
 The model training is configured to auto-evaluate daily at **3:00 AM UTC** to incorporate newly ingested music catalogs and verify that classification performance remains stable over time. If the rolling macro F1-score drops below **0.65**, an alert is automatically dispatched to the engineering team.
-##Live Demo is available in 
-https://musicgenreclassifiergit-l7oqyanqlkhxsowvcnhxbg.streamlit.app/
+
